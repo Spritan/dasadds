@@ -23,6 +23,7 @@ st.sidebar.header("Upload Video")
 uploaded_file = st.sidebar.file_uploader(
     "Choose a video file", type=["mp4", "avi", "mov"]
 )
+selection = st.sidebar.radio("Select an option:", ("onlyHands", "allVectors"))
 
 col1, col2 = st.columns([1, 1])
 
@@ -35,7 +36,6 @@ with col2:
         with st.expander("Uploaded Video", expanded=False):
             st.video(uploaded_file)
 
-
 if uploaded_file is not None and st.button("Process Video"):
     with tempfile.TemporaryDirectory() as temp_dir:
         temp_file_path = os.path.join(temp_dir, "uploaded_video.mp4")
@@ -44,22 +44,27 @@ if uploaded_file is not None and st.button("Process Video"):
 
         with st.expander("Logs", expanded=True):
             st.text("Step 0  : Uploaded video file successfully.")
-            
+
             ins_keypoints, primary_frames = Step1(
                 video_path=ins_vid,
                 important_frames=important_frames,
             )
             st.text("Step 1  : Instaructor key points extracted successfully.")
-            
-            stu_keypoints, most_similar_keypoints, most_similar_keypoint_indices = Step2(
-                video_path=temp_file_path, 
-                primary_frames=primary_frames
-            )
+
+            if selection=="onlyHands":
+                stu_keypoints, most_similar_keypoints, most_similar_keypoint_indices = (
+                    Step2(video_path=temp_file_path, primary_frames=primary_frames, onlyHands=True)
+                )
+            else:
+                stu_keypoints, most_similar_keypoints, most_similar_keypoint_indices = (
+                    Step2(video_path=temp_file_path, primary_frames=primary_frames, onlyHands=False)
+                )
+
             st.text("Step 2.1: Student key points compared successfully.")
             st.text(
                 f"Step 2.2: Extracted most similar keypoint indices: {most_similar_keypoint_indices}"
             )
-            
+
             diff_list = Step3(
                 primary_frames=primary_frames,
                 most_similar_keypoint_indices=most_similar_keypoint_indices,
@@ -67,25 +72,22 @@ if uploaded_file is not None and st.button("Process Video"):
             )
             diff_list2 = copy.deepcopy(diff_list)
             st.text("Step 3  : Angle difference Calculated.")
-            
-            response_list = Step4(
-                diff_list,
-                diff_list2
-            )
+
+            response_list = Step4(diff_list, diff_list2)
             st.text("Step 4  : LLM text response gene.")
-            
-            stud_list, teach_list =  Step5(
+
+            stud_list, teach_list = Step5(
                 temp_file_path,
                 ins_vid,
                 important_frames,
                 most_similar_keypoint_indices,
-                diff_list
+                diff_list,
             )
             st.text("Step 5  : Image VIsualizations Generated.")
 
     if stud_list:
         Step6(stud_list, teach_list, response_list)
-        
-    for i,j in zip(stud_list, teach_list):
+
+    for i, j in zip(stud_list, teach_list):
         os.remove(i)
         os.remove(j)

@@ -7,8 +7,8 @@ def readKeypoints(video_path:str):
     
     return instructor_keypoints
     
-def Step2(video_path:str, primary_frames:list)-> tuple[list,list,list]:
+def Step2(video_path:str, primary_frames:list, onlyHands=True)-> tuple[list,list,list]:
     keypoints = readKeypoints(video_path)
-    most_similar_keypoints, most_similar_keypoint_indices = find_most_similar_keypoints_vectors(primary_frames, keypoints)
+    most_similar_keypoints, most_similar_keypoint_indices = find_most_similar_keypoints_vectors(primary_frames, keypoints, onlyHands=onlyHands)
     
     return keypoints, most_similar_keypoints, most_similar_keypoint_indices
