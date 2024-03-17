@@ -19,17 +19,19 @@ st.set_page_config(
 st.title("SPARTS Video tester")
 
 # Sidebar with upload button
-st.sidebar.header("Upload Video")
+st.sidebar.header("Options")
 uploaded_file = st.sidebar.file_uploader(
     "Choose a video file", type=["mp4", "avi", "mov"]
 )
 selection = st.sidebar.radio("Select an option:", ("onlyHands", "allVectors"))
 
+value_test_obj.setSliderValue()
+
 col1, col2 = st.columns([1, 1])
 
 with col1:
     with st.expander("Instructor Video", expanded=False):
-        st.video("./data/punchInstuctorVideo.mp4")
+        st.video(ins_vid)
 
 with col2:
     if uploaded_file is not None:
@@ -51,13 +53,15 @@ if uploaded_file is not None and st.button("Process Video"):
             )
             st.text("Step 1  : Instaructor key points extracted successfully.")
 
-            if selection=="onlyHands":
+            if selection == "onlyHands":
                 stu_keypoints, most_similar_keypoints, most_similar_keypoint_indices = (
-                    Step2(video_path=temp_file_path, primary_frames=primary_frames, onlyHands=True)
+                    Step2(video_path=temp_file_path,
+                          primary_frames=primary_frames, onlyHands=True)
                 )
             else:
                 stu_keypoints, most_similar_keypoints, most_similar_keypoint_indices = (
-                    Step2(video_path=temp_file_path, primary_frames=primary_frames, onlyHands=False)
+                    Step2(video_path=temp_file_path,
+                          primary_frames=primary_frames, onlyHands=False)
                 )
 
             st.text("Step 2.1: Student key points compared successfully.")
@@ -74,6 +78,7 @@ if uploaded_file is not None and st.button("Process Video"):
             st.text("Step 3  : Angle difference Calculated.")
 
             response_list = Step4(diff_list, diff_list2)
+            # response_list = ["sdd", "sds", "dds"]
             st.text("Step 4  : LLM text response gene.")
 
             stud_list, teach_list = Step5(
@@ -89,5 +94,7 @@ if uploaded_file is not None and st.button("Process Video"):
         Step6(stud_list, teach_list, response_list)
 
     for i, j in zip(stud_list, teach_list):
-        os.remove(i)
-        os.remove(j)
+        if i  != "test.png":
+            os.remove(i)
+        if j  != "test.png":
+            os.remove(j)
