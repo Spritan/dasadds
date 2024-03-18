@@ -7,7 +7,7 @@ from utils import cal_score, DROP_score, to_markdown
 
 env_vars = dotenv_values()
         
-genai.configure(api_key = env_vars.get("API_KEY"))
+genai.configure(api_key = st.secrets["API_KEY"])
 model = genai.GenerativeModel("gemini-pro")
 
 
