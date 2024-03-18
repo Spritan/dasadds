@@ -126,6 +126,8 @@ def find_most_similar_keypoints_vectors(primary_frames, student_keypoints, onlyH
     most_similar_keypoint_indices = []
     last_selected_index = -1  # Initialize with -1 for the first iteration
 
+    tot_frames= len(primary_frames)
+
     for id, primary_frame in enumerate(primary_frames):
         best_similarity = -1  # Initialize with a negative value
         most_similar_keypoint = None

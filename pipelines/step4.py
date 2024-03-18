@@ -1,9 +1,13 @@
 import json
+from dotenv import dotenv_values
 import google.generativeai as genai
+import streamlit as st
 
 from utils import cal_score, DROP_score, to_markdown
 
-genai.configure(api_key="AIzaSyBoeRHnWpFhWKmZyFpM5qmnFVqLwMcX9N8")
+env_vars = dotenv_values()
+        
+genai.configure(api_key = env_vars.get("API_KEY"))
 model = genai.GenerativeModel("gemini-pro")
 
 
