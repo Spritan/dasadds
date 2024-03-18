@@ -15,10 +15,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Main page heading
 st.title("SPARTS Video tester")
 
-# Sidebar with upload button
 st.sidebar.header("Options")
 uploaded_file = st.sidebar.file_uploader(
     "Choose a video file", type=["mp4", "avi", "mov"]
@@ -54,12 +52,12 @@ if uploaded_file is not None and st.button("Process Video"):
             st.text("Step 1  : Instaructor key points extracted successfully.")
 
             if selection == "onlyHands":
-                stu_keypoints, most_similar_keypoints, most_similar_keypoint_indices = (
+                stu_keypoints, most_similar_keypoints, most_similar_keypoint_indices, cmnt_list = (
                     Step2(video_path=temp_file_path,
                           primary_frames=primary_frames, onlyHands=True)
                 )
             else:
-                stu_keypoints, most_similar_keypoints, most_similar_keypoint_indices = (
+                stu_keypoints, most_similar_keypoints, most_similar_keypoint_indices, cmnt_list = (
                     Step2(video_path=temp_file_path,
                           primary_frames=primary_frames, onlyHands=False)
                 )
@@ -91,7 +89,7 @@ if uploaded_file is not None and st.button("Process Video"):
             st.text("Step 5  : Image VIsualizations Generated.")
 
     if stud_list:
-        Step6(stud_list, teach_list, response_list)
+        Step6(stud_list, teach_list, response_list, cmnt_list)
 
     for i, j in zip(stud_list, teach_list):
         if i  != "test.png":
