@@ -8,6 +8,7 @@ import streamlit as st
 from .vectorOps import calculate_vector
 from constants import value_test_obj
 
+
 def cosine_similarity(v1, v2):
     return np.dot(v1, v2) / (norm(v1) * norm(v2))
 
@@ -202,7 +203,7 @@ def find_most_similar_keypoints_vectors(
     tot_frames = len(primary_frames)
 
     frame_ranges = []
-    buffer_factor = 0.13       
+    buffer_factor = 0.13
 
     for ink in range(tot_frames):
         if ink == 0:
@@ -246,7 +247,6 @@ def find_most_similar_keypoints_vectors(
         most_similar_keypoint_index = 0
         cmnt = ""
 
-        # for tup in frame_ranges:
         start, end = frame_ranges[id]
         st.write(start, end)
 
@@ -261,14 +261,14 @@ def find_most_similar_keypoints_vectors(
                 most_similar_keypoint = student_frame
                 most_similar_keypoint_index = idx
                 cmnt = ""
-                
+
             elif similarity > best_similarity and similarity <= similarity_threshold:
                 best_similarity = similarity
                 most_similar_keypoint = student_frame
                 most_similar_keypoint_index = 0
                 cmnt = "### No proper pose executed or you are not following fproper timings and rythem compared to the Instructor, try again..."
-        
-        if start!=0 and most_similar_keypoint_index==0:
+
+        if start > 0 and most_similar_keypoint_index == 0:
             best_similarity = -1
             for idx in range(0, tot_student_frames):
                 student_frame = student_keypoints[idx]
@@ -282,13 +282,13 @@ def find_most_similar_keypoints_vectors(
                     most_similar_keypoint_index = idx
                     cmnt = "### No proper pose executed or you are not following fproper timings but your most similar pose pose is ..."
 
+        if start == 0 and most_similar_keypoint_index == 0:
+            cmnt = ""
 
         if most_similar_keypoint is not None:
             most_similar_keypoints.append(most_similar_keypoint)
             most_similar_keypoint_indices.append(most_similar_keypoint_index)
             last_selected_index = most_similar_keypoint_index
             cmnt_list.append(cmnt)
-
-    # st.write(most_similar_keypoint_indices)
 
     return most_similar_keypoints, most_similar_keypoint_indices, cmnt_list

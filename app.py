@@ -4,6 +4,9 @@ import tempfile
 
 import streamlit as st
 
+import pdfkit
+from weasyprint import HTML
+
 from pipelines import *
 from styles import *
 from constants import *
@@ -21,7 +24,7 @@ st.sidebar.header("Options")
 uploaded_file = st.sidebar.file_uploader(
     "Choose a video file", type=["mp4", "avi", "mov"]
 )
-selection = st.sidebar.radio("Select an option:", ("onlyHands", "allVectors"))
+selection = "allVectors"
 
 value_test_obj.setSliderValue()
 
@@ -96,3 +99,6 @@ if uploaded_file is not None and st.button("Process Video"):
             os.remove(i)
         if j  != "test.png":
             os.remove(j)
+
+# if st.button("Press this button to trigger Ctrl+P"):
+#         st.markdown('<script>window.print();</script>', unsafe_allow_html=True)
