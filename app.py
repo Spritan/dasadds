@@ -4,9 +4,6 @@ import tempfile
 
 import streamlit as st
 
-import pdfkit
-from weasyprint import HTML
-
 from pipelines import *
 from styles import *
 from constants import *
@@ -55,14 +52,26 @@ if uploaded_file is not None and st.button("Process Video"):
             st.text("Step 1  : Instaructor key points extracted successfully.")
 
             if selection == "onlyHands":
-                stu_keypoints, most_similar_keypoints, most_similar_keypoint_indices, cmnt_list = (
-                    Step2(video_path=temp_file_path,
-                          primary_frames=primary_frames, onlyHands=True)
+                (
+                    stu_keypoints,
+                    most_similar_keypoints,
+                    most_similar_keypoint_indices,
+                    cmnt_list,
+                ) = Stecp2(
+                    video_path=temp_file_path,
+                    primary_frames=primary_frames,
+                    onlyHands=True,
                 )
             else:
-                stu_keypoints, most_similar_keypoints, most_similar_keypoint_indices, cmnt_list = (
-                    Step2(video_path=temp_file_path,
-                          primary_frames=primary_frames, onlyHands=False)
+                (
+                    stu_keypoints,
+                    most_similar_keypoints,
+                    most_similar_keypoint_indices,
+                    cmnt_list,
+                ) = Step2(
+                    video_path=temp_file_path,
+                    primary_frames=primary_frames,
+                    onlyHands=False,
                 )
 
             st.text("Step 2.1: Student key points compared successfully.")
@@ -95,10 +104,7 @@ if uploaded_file is not None and st.button("Process Video"):
         Step6(stud_list, teach_list, response_list, cmnt_list)
 
     for i, j in zip(stud_list, teach_list):
-        if i  != "test.png":
+        if i != "test.png":
             os.remove(i)
-        if j  != "test.png":
+        if j != "test.png":
             os.remove(j)
-
-# if st.button("Press this button to trigger Ctrl+P"):
-#         st.markdown('<script>window.print();</script>', unsafe_allow_html=True)

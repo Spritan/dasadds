@@ -120,25 +120,5 @@ def Step4(diff_list: list, diff_list2: list) -> list[dict]:
                 data = yaml.safe_load(response.candidates[0].content.parts[0].text)
                 data['Score'] = f"{cal_score(diff_list2[idx])} out of {len(diff_list2[idx].keys())}"
             # print(data)
-        # print(f"{cal_score(diff_list2[idx])} out of {len(diff_list2[idx].keys())}")
         response_list.append(data)
     return response_list
-
-
-                # ### Overall Score: 3 out of 4
-                # ### Findings:
-                   
-                # ...
-                                     
-                # ### Tips for Improvement:
-
-                #  - Keep the left arm relaxed and close to the body.
-                #  - Avoid raising the arm or bending it at an angle.
-
-                # ### Comments:
-
-                #  - The student's posture is generally good, with the exception of the left arm position.
-                #  - Correcting this issue will help improve balance and reduce the risk of injury.
-                #  - Regular practice and attention to body position will help the student maintain proper posture during sports activities.
-                #  //
-                # Also announch the score which is {cal_score(diff_list2[idx])} out of {len(diff_list2[idx].keys())}
