@@ -1,4 +1,5 @@
 # import numpy as np
+import streamlit as st
 from utils import extract_keypoints_from_video
 
 def readKeypoints(video_path:str):
@@ -8,5 +9,13 @@ def readKeypoints(video_path:str):
 def Step1(video_path:str, important_frames:list[int])-> tuple[list,list]:
     keypoints = readKeypoints(video_path)
     primary_frames = [keypoints[i] for i in important_frames]
+    for idx, j in enumerate(zip(important_frames, primary_frames)):
+        imp_frame, p_frame = j
+        if p_frame == None:
+            i =idx
+            while(important_frames[i] == None):
+                i+=1
+            primary_frames[i] = important_frames[i]
+                
     return keypoints, primary_frames
     

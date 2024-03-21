@@ -8,13 +8,36 @@ import streamlit as st
 from .vectorOps import calculate_vector
 from constants import value_test_obj
 
+def cosine_similarity(
+    v1:tuple[int,int,int], 
+    v2:tuple[int,int,int]
+    )->float:
+    """_summary_
 
-def cosine_similarity(v1, v2):
+    Args:
+        v1 (tuple[int,int,int]): _description_
+        v2 (tuple[int,int,int]): _description_
+
+    Returns:
+        float: _description_
+    """
     return np.dot(v1, v2) / (norm(v1) * norm(v2))
 
+def compute_similarity_vector(
+    prev_pose:list,
+    current_pose:list, 
+    onlyHands=True
+    )->float:
+    """_summary_
 
-def compute_similarity_vector(prev_pose, current_pose, onlyHands=True):
-    """ """
+    Args:
+        prev_pose (list): _description_
+        current_pose (list): _description_
+        onlyHands (bool, optional): _description_. Defaults to True.
+
+    Returns:
+        float: _description_
+    """
     try:
         prev_pose_left_shoulder = prev_pose[
             mp.solutions.pose.PoseLandmark.LEFT_SHOULDER.value
@@ -187,13 +210,24 @@ def compute_similarity_vector(prev_pose, current_pose, onlyHands=True):
 
         return similarity
     except Exception as e:
-        st.write(e)
+        print(e)
         return 0
 
-
 def find_most_similar_keypoints_vectors(
-    primary_frames: list, student_keypoints: list, onlyHands: bool
-):
+    primary_frames: list, 
+    student_keypoints: list, 
+    onlyHands: bool
+    )->tuple[list,list,list]:
+    """_summary_
+
+    Args:
+        primary_frames (list): _description_
+        student_keypoints (list): _description_
+        onlyHands (bool): _description_
+
+    Returns:
+        tuple[list,list,list]: _description_
+    """
     most_similar_keypoints = []
     most_similar_keypoint_indices = []
     cmnt_list = []
@@ -242,6 +276,7 @@ def find_most_similar_keypoints_vectors(
 
     # st.write(frame_ranges)
     for id, primary_frame in enumerate(primary_frames):
+        
         best_similarity = -1
         most_similar_keypoint = None
         most_similar_keypoint_index = 0
@@ -251,9 +286,9 @@ def find_most_similar_keypoints_vectors(
         st.write(start, end)
 
         for idx in range(start, end):
-            st.write(idx)
+            # st.write(idx)
             student_frame = student_keypoints[idx]
-            st.write("default")
+            # st.write("default")
             similarity = compute_similarity_vector(
                 primary_frame, student_frame, onlyHands
             )
@@ -274,7 +309,7 @@ def find_most_similar_keypoints_vectors(
             best_similarity = -1
             for idx in range(0, tot_student_frames):
                 student_frame = student_keypoints[idx]
-                st.write("start > 0 and most_similar_keypoint_index == 0:", idx)
+                # st.write("start > 0 and most_similar_keypoint_index == 0:", idx)
                 similarity = compute_similarity_vector(
                     primary_frame, student_frame, onlyHands
                 )

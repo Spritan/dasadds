@@ -1,30 +1,84 @@
 import math
 import mediapipe as mp
 
-def calculate_vector(p1, p2):
+def calculate_vector(
+    p1:tuple[int,int,int], 
+    p2:tuple[int,int,int]
+    )->tuple[int,int,int]:
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
     return (p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2])
 
-def calculate_angle(v1, v2):
+def calculate_angle(
+    v1:tuple[int,int,int], 
+    v2:tuple[int,int,int]
+    )->float:
+    """_summary_
+
+    Args:
+        v1 (tuple[int,int,int]): _description_
+        v2 (tuple[int,int,int]): _description_
+
+    Returns:
+        float: _description_
+    """
     dot_product = sum(a * b for a, b in zip(v1, v2))
     magnitude1 = math.sqrt(sum(a ** 2 for a in v1))
     magnitude2 = math.sqrt(sum(b ** 2 for b in v2))
     cosine_angle = dot_product / (magnitude1 * magnitude2)
     return math.degrees(math.acos(cosine_angle))
 
-def angle_diff(angles1:dict, angles2:dict)->dict:
+def angle_diff(
+    angles1:dict, 
+    angles2:dict
+    )->dict:
+    """_summary_
+
+    Args:
+        angles1 (dict): _description_
+        angles2 (dict): _description_
+
+    Returns:
+        dict: _description_
+    """
     angle_differences = {}
 
     for key in angles1.keys():
         angle_differences[key] = angles1[key] - angles2[key]
     return angle_differences
 
-def middle_keypoint(keypoints1, keypoints2):
+def middle_keypoint(
+    keypoints1:tuple, 
+    keypoints2:tuple
+    )->tuple:
+    """_summary_
+
+    Args:
+        keypoints1 (tuple): _description_
+        keypoints2 (tuple): _description_
+
+    Returns:
+        tuple: _description_
+    """
     keypoint = ((keypoints1[0]+keypoints2[0])/2,
                 (keypoints1[1]+keypoints2[1])/2,
                 (keypoints1[2]+keypoints2[2])/2)
     return keypoint
 
-def calculate_angles(keypoints):
+def calculate_angles(
+    keypoints:list
+    )->dict:
+    """_summary_
+
+    Args:
+        keypoints (list): _description_
+
+    Returns:
+        dict: _description_
+    """
     angles = {}
 
     # Calculate angles for left arm
