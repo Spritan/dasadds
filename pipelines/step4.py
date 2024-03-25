@@ -47,7 +47,6 @@ def Step4(diff_list: list, diff_list2: list) -> list[dict]:
                     """,
                 stream=False,
             )
-            print(response.candidates[0].content.parts[0].text)
             data = yaml.safe_load(response.candidates[0].content.parts[0].text)
             data['Score'] = f"{cal_score(diff_list2[idx])} out of {len(diff_list2[idx].keys())}"
         except:
@@ -82,7 +81,6 @@ def Step4(diff_list: list, diff_list2: list) -> list[dict]:
                         """,
                     stream=False,
                 )
-                print(response.candidates[0].content.parts[0].text)
                 data = yaml.safe_load(response.candidates[0].content.parts[0].text)
                 data['Score'] = f"{cal_score(diff_list2[idx])} out of {len(diff_list2[idx].keys())}"
             except:
@@ -116,7 +114,6 @@ def Step4(diff_list: list, diff_list2: list) -> list[dict]:
                     """,
                 stream=False,
                 )
-                print(response.candidates[0].content.parts[0].text)
                 data = yaml.safe_load(response.candidates[0].content.parts[0].text)
                 data['Score'] = f"{cal_score(diff_list2[idx])} out of {len(diff_list2[idx].keys())}"
             # print(data)

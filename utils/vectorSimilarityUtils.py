@@ -246,7 +246,7 @@ def find_most_similar_keypoints_vectors(
                     0,
                     math.ceil(
                         ((ink + 1) * tot_student_frames / tot_frames)
-                        + (buffer_factor * tot_student_frames)
+                        # + (buffer_factor * tot_student_frames)
                     ),
                 )
             )
@@ -255,7 +255,7 @@ def find_most_similar_keypoints_vectors(
                 (
                     math.ceil(
                         ((ink) * tot_student_frames / tot_frames)
-                        - (buffer_factor * tot_student_frames)
+                        # - (buffer_factor * tot_student_frames)
                     ),
                     tot_student_frames - 1,
                 )
@@ -265,11 +265,11 @@ def find_most_similar_keypoints_vectors(
                 (
                     math.ceil(
                         ((ink) * tot_student_frames / tot_frames)
-                        - (buffer_factor * tot_student_frames)
+                        # - (buffer_factor * tot_student_frames)
                     ),
                     math.ceil(
                         ((ink + 1) * tot_student_frames / tot_frames)
-                        + (buffer_factor * tot_student_frames)
+                        # + (buffer_factor * tot_student_frames)
                     ),
                 )
             )
@@ -283,7 +283,7 @@ def find_most_similar_keypoints_vectors(
         cmnt = ""
 
         start, end = frame_ranges[id]
-        st.write(start, end)
+        print(start, end)
 
         for idx in range(start, end):
             # st.write(idx)
@@ -292,6 +292,7 @@ def find_most_similar_keypoints_vectors(
             similarity = compute_similarity_vector(
                 primary_frame, student_frame, onlyHands
             )
+            print("start, end", similarity)
             similarity_threshold = value_test_obj.getSliderValue()
             if similarity > best_similarity and similarity > similarity_threshold:
                 best_similarity = similarity
@@ -307,12 +308,15 @@ def find_most_similar_keypoints_vectors(
 
         if start > 0 and most_similar_keypoint_index == 0:
             best_similarity = -1
+            most_similar_keypoint = None
+            most_similar_keypoint_index = 0
             for idx in range(0, tot_student_frames):
                 student_frame = student_keypoints[idx]
                 # st.write("start > 0 and most_similar_keypoint_index == 0:", idx)
                 similarity = compute_similarity_vector(
                     primary_frame, student_frame, onlyHands
                 )
+                print("start > 0 and most_similar_keypoint_index", similarity)
                 similarity_threshold = value_test_obj.getSliderValue()
                 if similarity > best_similarity and similarity > similarity_threshold:
                     best_similarity = similarity
