@@ -1,7 +1,15 @@
 import streamlit as st
 
-def Step6(stud_list,teach_list,response_list_txt, cmnt_list):
-    
+def Step6(
+    stud_list:list,
+    teach_list:list,
+    response_list_txt:list, 
+    cmnt_list:list
+    )->None:
+    # st.write("stud_list",len(stud_list))
+    # st.write("teach_list",len(teach_list))
+    # st.write("response_list_txt",len(response_list_txt))
+    # st.write("cmnt_list",len(cmnt_list))
     for i,j,k,l in zip(stud_list,teach_list,response_list_txt, cmnt_list):
         col1, col2, col3 = st.columns(3)
         with col1:

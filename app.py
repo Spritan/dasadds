@@ -21,7 +21,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     image = frame.to_ndarray(format="bgr24")
     rgb_frm = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     results = mp_pose.process(rgb_frm)
-    print(results)
+    # print(results)
     if results.pose_landmarks:
         mp.drawing_utils.draw_landmarks(image, results.pose_landmarks, mp.solutions.pose.POSE_CONNECTIONS)
     frm_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
@@ -80,8 +80,10 @@ if MODE_OPS == "Upload":
                     video_path=ins_vid,
                     important_frames=important_frames,
                 )
-                print(important_frames)
-                print(primary_frames)
+                # print(important_frames)
+                # print(primary_frames)
+                if primary_frames[0]==0:
+                    st.write("Step1")
                 st.text("Step 1  : Instaructor key points extracted successfully.")
 
                 if selection == "onlyHands":
@@ -90,7 +92,7 @@ if MODE_OPS == "Upload":
                         most_similar_keypoints,
                         most_similar_keypoint_indices,
                         cmnt_list,
-                    ) = Stecp2(
+                    ) = Step2(
                         video_path=temp_file_path,
                         primary_frames=primary_frames,
                         onlyHands=True,
@@ -106,19 +108,27 @@ if MODE_OPS == "Upload":
                         primary_frames=primary_frames,
                         onlyHands=False,
                     )
-
+                if primary_frames[0]==0:
+                    st.write("Step2")
                 st.text("Step 2.1: Student key points compared successfully.")
                 st.text(
                     f"Step 2.2: Extracted most similar keypoint indices: {most_similar_keypoint_indices}"
                 )
+                # print("primary_frames", primary_frames)
 
                 diff_list = Step3(
                     primary_frames=primary_frames,
                     most_similar_keypoint_indices=most_similar_keypoint_indices,
                     student_keypoints=stu_keypoints,
                 )
+                # st.write("stu_keypoints", len(stu_keypoints))
+                # st.write("most_similar_keypoints", len(most_similar_keypoints))
+                # st.write("most_similar_keypoint_indices", len(most_similar_keypoint_indices))
+                if primary_frames[0]==0:
+                    st.write("Step3")
                 diff_list2 = copy.deepcopy(diff_list)
                 st.text("Step 3  : Angle difference Calculated.")
+                
 
                 response_list = Step4(diff_list, diff_list2)
                 # response_list = ["sdd", "sds", "dds"]
@@ -151,11 +161,5 @@ elif MODE_OPS == "Record":
     with col2:
         webrtc_streamer(
             key="key",
-            # mode=WebRtcMode.SENDRECV,
             video_frame_callback=video_frame_callback,
-            # media_stream_constraints={"video": True, "audio": False},
-            # video_frame_callback=video_frame_callback,
-            # rtc_configuration=RTCConfiguration(
-            #     {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
-            # ),
         )

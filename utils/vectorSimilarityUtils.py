@@ -283,7 +283,7 @@ def find_most_similar_keypoints_vectors(
         cmnt = ""
 
         start, end = frame_ranges[id]
-        print(start, end)
+        # print(start, end)
 
         for idx in range(start, end):
             # st.write(idx)
@@ -292,7 +292,7 @@ def find_most_similar_keypoints_vectors(
             similarity = compute_similarity_vector(
                 primary_frame, student_frame, onlyHands
             )
-            print("start, end", similarity)
+            # print("start, end", similarity)
             similarity_threshold = value_test_obj.getSliderValue()
             if similarity > best_similarity and similarity > similarity_threshold:
                 best_similarity = similarity
@@ -316,7 +316,7 @@ def find_most_similar_keypoints_vectors(
                 similarity = compute_similarity_vector(
                     primary_frame, student_frame, onlyHands
                 )
-                print("start > 0 and most_similar_keypoint_index", similarity)
+                # print("start > 0 and most_similar_keypoint_index", similarity)
                 similarity_threshold = value_test_obj.getSliderValue()
                 if similarity > best_similarity and similarity > similarity_threshold:
                     best_similarity = similarity

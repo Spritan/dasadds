@@ -27,7 +27,7 @@ def Step5(
                     ang_lst.append(keys)
             draw_right_arm_new2(student_vid, j, "student_", ang_lst)
             stud_list.append(f"student__{j}.jpg")
-            print(f"student__{j}.jpg")
+            # print(f"student__{j}.jpg")
             draw_right_arm_new2(teacher_vid, i, "teacher_", ang_lst)
             teach_list.append(f"teacher__{i}.jpg")
         else:

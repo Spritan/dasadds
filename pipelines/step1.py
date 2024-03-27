@@ -12,10 +12,7 @@ def Step1(video_path:str, important_frames:list[int])-> tuple[list,list]:
     for idx, j in enumerate(zip(important_frames, primary_frames)):
         imp_frame, p_frame = j
         if p_frame == None:
-            i =idx
-            while(important_frames[i] == None):
-                i+=1
-            primary_frames[i] = important_frames[i]
-                
+            primary_frames[idx] = keypoints[idx+1]
+    print("primary_frames", primary_frames)
     return keypoints, primary_frames
     
